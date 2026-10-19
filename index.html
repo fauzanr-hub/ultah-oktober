@@ -154,18 +154,54 @@
     100%{transform:translate(calc(-50% + var(--dx)),-125vh) scale(1) rotate(var(--r));opacity:1}
   }
 
-  /* ---------- KENALAN: BALITA BERWAJAH MEREKA ---------- */
-  .intro-title{font-size:clamp(1.5rem,6vw,2.2rem);line-height:1.15}
-  .intro-sub{font-size:1.2rem;margin:-8px 0 0}
-  .stage{position:relative;display:flex;justify-content:center;align-items:flex-end;gap:clamp(6px,3vw,44px);
-    width:min(740px,100%);padding:0 6px 26px;margin-top:6px}
-  .stage::after{content:'';position:absolute;left:0;right:0;bottom:0;height:44px;background:#9be3a1;
-    border:3px solid var(--ink);border-radius:22px;z-index:0}
-  .tod{position:relative;width:clamp(98px,28vw,180px);aspect-ratio:1/2;cursor:pointer;z-index:1;
-    animation:bob 2.6s ease-in-out var(--d) infinite;-webkit-tap-highlight-color:transparent}
-  .tod.jump{animation:jump .7s ease}
-  @keyframes bob{50%{transform:translateY(-7px)}}
+  /* ---------- BALITA (dipakai di permainan tangkap) ---------- */
+  .tod{position:relative;width:100%;aspect-ratio:1/2}
   @keyframes jump{25%{transform:translateY(-38px) rotate(-5deg)}55%{transform:translateY(0) rotate(3deg)}75%{transform:translateY(-10px)}100%{transform:none}}
+  .leg{transform-box:fill-box;transform-origin:top center}
+
+  /* ---------- PERMAINAN: TANGKAP & MASUKKAN KE KELAS ---------- */
+  .play-title{font-size:clamp(1.5rem,6vw,2.3rem);line-height:1.15}
+  .play-sub{font-size:1.2rem;margin:-8px 0 0;max-width:560px}
+  .counter{display:inline-block;font-family:'Baloo 2';background:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:0 12px;white-space:nowrap}
+  .game{position:relative;width:min(980px,100%);display:flex;flex-direction:column;gap:12px;user-select:none;-webkit-user-select:none}
+  .yard{position:relative;height:clamp(300px,46vh,470px);border:3px solid var(--ink);border-radius:24px;overflow:hidden;
+    background:#c8efc3;background-image:radial-gradient(#b0e3a9 2px,transparent 2px);background-size:26px 26px;box-shadow:5px 5px 0 var(--ink)}
+  .yard .deco{position:absolute;font-size:clamp(1.3rem,4vw,2rem);opacity:.85;pointer-events:none}
+  .yard .empty{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:1.3rem;opacity:.7}
+  .runner{position:absolute;left:0;top:0;width:clamp(64px,16vw,110px);z-index:3;cursor:pointer;
+    transform-origin:0 0;will-change:transform;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .runner .tod{animation:runbob .3s ease-in-out infinite alternate}
+  @keyframes runbob{from{transform:translateY(0) rotate(var(--tilt,0deg))}to{transform:translateY(-7px) rotate(var(--tilt,0deg))}}
+  .runner .l1{animation:leg .3s ease-in-out infinite alternate}
+  .runner .l2{animation:leg .3s ease-in-out infinite alternate-reverse}
+  @keyframes leg{from{transform:translateY(0)}to{transform:translateY(-6px)}}
+  .runner.caught .tod{animation:jump .5s ease}
+  .runner.caught .leg{animation:none}
+  .runner.to-class{transition:transform .9s cubic-bezier(.5,-.35,.35,1);z-index:30;pointer-events:none}
+  .runner .tag{position:absolute;left:50%;bottom:-9%;transform:translateX(-50%);background:#fff;border:2px solid var(--ink);
+    border-radius:999px;padding:0 8px;font-family:'Baloo 2';font-size:clamp(.72rem,2.8vw,.95rem);white-space:nowrap;z-index:2}
+  .hap{position:absolute;z-index:31;font-family:'Baloo 2';font-weight:800;font-size:clamp(1.3rem,4vw,2rem);color:#d23c3c;
+    -webkit-text-stroke:1px #fff;pointer-events:none;animation:hap .9s ease forwards}
+  @keyframes hap{0%{opacity:0;transform:translate(-50%,0) scale(.5)}30%{opacity:1;transform:translate(-50%,-22px) scale(1.15)}100%{opacity:0;transform:translate(-50%,-60px) scale(1)}}
+
+  .school{position:relative;align-self:center;width:min(580px,100%);margin-top:40px}
+  .school .roof{position:absolute;left:-5%;width:110%;top:-50px;height:58px;overflow:visible}
+  .school-body{position:relative;display:flex;gap:clamp(6px,2vw,12px);align-items:stretch;background:#ffe39a;border:3px solid var(--ink);
+    border-radius:4px 4px 16px 16px;padding:clamp(8px,2vw,14px);box-shadow:5px 5px 0 var(--ink)}
+  .seat{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;background:#cfe9ff;
+    border:3px solid var(--ink);border-radius:12px;padding:8px 4px 6px;min-width:0}
+  .seat .slot{width:min(76px,17vw);aspect-ratio:1;border-radius:50%;border:3px dashed rgba(58,44,37,.35);display:flex;
+    align-items:center;justify-content:center;font-family:'Baloo 2';font-size:1.6rem;color:rgba(58,44,37,.35);background:rgba(255,255,255,.5)}
+  .seat .face{width:min(76px,17vw);animation:pop .4s cubic-bezier(.3,1.6,.6,1)}
+  .seat .nm{font-family:'Baloo 2';font-size:clamp(.78rem,3vw,1rem);line-height:1.1}
+  .seat .desk{width:92%;height:10px;background:#c98b4f;border:2px solid var(--ink);border-radius:3px}
+  .seat.filled{cursor:pointer;background:#fff6c9}
+  .seat.filled:hover{transform:translateY(-3px)}
+  .door{width:clamp(40px,11vw,68px);flex-shrink:0;align-self:flex-end;height:clamp(84px,22vw,120px);background:#c98b4f;
+    border:3px solid var(--ink);border-radius:34px 34px 0 0;position:relative}
+  .door::after{content:'';position:absolute;right:18%;top:52%;width:7px;height:7px;border-radius:50%;background:var(--ink)}
+  .school.ring{animation:ring .5s ease 3}
+  @keyframes ring{25%{transform:rotate(-1.2deg)}75%{transform:rotate(1.2deg)}}
   .tod svg.body{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
   .tod .face{position:absolute;width:62%;left:50%;top:28%;transform:translateX(-50%)}
   .tod .hat{position:absolute;width:30%;left:14%;top:15%;transform:rotate(-22deg);z-index:2}
@@ -290,7 +326,7 @@
 <!-- 1. COVER -->
 <section class="screen active" id="s-cover">
   <h1 class="cover-title">Surat untuk <span>Adik-Adik</span><br>yang Ulang Tahun Bulan Oktober</h1>
-  <p class="cover-sub">Dari Bapak/Ibu Guru Tim HCM 🍭</p>
+  <p class="cover-sub" id="coverFrom"></p>
   <div class="envelope" id="envelope" role="button" aria-label="Buka surat">
     <div class="env-back"></div>
     <div class="letter">Selamat Ulang Tahun!<br>🎂🎈🎉</div>
@@ -301,19 +337,32 @@
   <p class="hint" id="coverHint">Ketuk amplopnya ya, Nak! 👆</p>
 </section>
 
-<!-- 1b. KENALAN -->
-<section class="screen" id="s-intro">
-  <h2 class="center intro-title">Kenalan dulu sama<br>murid baru kita! 👶</h2>
-  <p class="center intro-sub">Ketuk adik-adiknya satu per satu ya</p>
-  <div class="stage" id="stage"></div>
+<!-- 1b. PERMAINAN: TANGKAP & MASUKKAN KE KELAS -->
+<section class="screen" id="s-play">
+  <h2 class="center play-title" id="playTitle">Waduh, adik-adiknya kabur! 🏃💨</h2>
+  <p class="center play-sub" id="playSub">Ketuk untuk menangkap, lalu mereka masuk ke kelas · <span class="counter" id="playCount">0/3 tertangkap</span></p>
+  <div class="game" id="game">
+    <div class="yard" id="yard">
+      <span class="deco" style="left:4%;top:6%">🌳</span><span class="deco" style="right:5%;top:10%">🌼</span>
+      <span class="deco" style="left:44%;top:3%">☁️</span><span class="deco" style="left:8%;bottom:6%">🌷</span>
+      <span class="deco" style="right:8%;bottom:8%">🌳</span><span class="deco" style="left:52%;bottom:4%">🌼</span>
+      <div class="empty" id="yardEmpty">Taman bermain sudah sepi… 🍃</div>
+    </div>
+    <div class="school" id="school">
+      <svg class="roof" viewBox="0 0 640 60" preserveAspectRatio="none" aria-hidden="true">
+        <polygon points="320,3 636,57 4,57" fill="#e2574c" stroke="#3a2c25" stroke-width="4" stroke-linejoin="round"/>
+      </svg>
+      <div class="school-body" id="seats"><div class="door"></div></div>
+    </div>
+  </div>
   <div class="nav">
-    <button class="btn" data-go="s-kids">Buka Buku Induk 📒</button>
+    <button class="btn" id="toRapor" style="display:none">📒 Bacakan Rapornya</button>
   </div>
 </section>
 
-<!-- 2. BIODATA MURID -->
+<!-- 2. RAPOR MURID -->
 <section class="screen" id="s-kids">
-  <div class="head-badge">📒 BUKU INDUK MURID · TIM HCM</div>
+  <div class="head-badge" id="raporBadge">📒 RAPOR MURID</div>
   <div class="tabs" id="tabs"></div>
   <div class="card" id="card"></div>
   <div class="nav">
@@ -372,7 +421,7 @@
   <div class="trio" id="trio"></div>
   <div class="final-card">
     <p style="margin:0" id="finalMsg"></p>
-    <div class="sign">— Bapak/Ibu Guru Tim HCM 💛</div>
+    <div class="sign" id="signFrom"></div>
   </div>
   <div class="nav">
     <button class="btn alt" data-go="s-wall">⬅ Kembali</button>
@@ -427,7 +476,11 @@ const KIDS = [
   }
 ];
 
-const PESAN_PENUTUP = 'Selamat ulang tahun, Kuswan, Samuel, dan Juan! Terima kasih sudah jadi teman kerja yang seru, sabar, dan selalu bisa diandalkan. Semoga tahun ini membawa kesehatan, rezeki yang lancar, dan kebahagiaan untuk kalian dan orang-orang tersayang. Tetap jadi anak baik di kantor ya, jangan lupa berbagi gorengan! 🎂💛';
+/* Nama pengirim kartu (muncul di sampul & penutup) dan nama kelasnya */
+const DARI = 'Bapak/Ibu Guru & Teman-Teman Sekelas';
+const NAMA_KELAS = 'Kelas Ulang Tahun Oktober';
+
+const PESAN_PENUTUP ='Selamat ulang tahun, Kuswan, Samuel, dan Juan! Terima kasih sudah jadi teman kerja yang seru, sabar, dan selalu bisa diandalkan. Semoga tahun ini membawa kesehatan, rezeki yang lancar, dan kebahagiaan untuk kalian dan orang-orang tersayang. Tetap jadi anak baik di kantor ya, jangan lupa berbagi gorengan! 🎂💛';
 
 /* PAPAN UCAPAN: link Apps Script diisi di file config.js (SCRIPT_URL).
    Selama masih kosong, papan menampilkan contoh ucapan. */
@@ -508,10 +561,10 @@ function toddlerSVG(k){
     </g>
     <line x1="32" y1="152" x2="20" y2="184" stroke="${c}" stroke-width="11" stroke-linecap="round"/>
     <circle cx="19" cy="189" r="6.5" fill="${skin}" stroke="${ink}" stroke-width="2"/>
-    <rect x="40" y="200" width="14" height="24" rx="6" fill="${skin}" stroke="${ink}" stroke-width="2"/>
-    <rect x="66" y="200" width="14" height="24" rx="6" fill="${skin}" stroke="${ink}" stroke-width="2"/>
-    <ellipse cx="46" cy="227" rx="11" ry="6" fill="#fff" stroke="${ink}" stroke-width="2"/>
-    <ellipse cx="74" cy="227" rx="11" ry="6" fill="#fff" stroke="${ink}" stroke-width="2"/>
+    <g class="leg l1"><rect x="40" y="200" width="14" height="24" rx="6" fill="${skin}" stroke="${ink}" stroke-width="2"/>
+      <ellipse cx="46" cy="227" rx="11" ry="6" fill="#fff" stroke="${ink}" stroke-width="2"/></g>
+    <g class="leg l2"><rect x="66" y="200" width="14" height="24" rx="6" fill="${skin}" stroke="${ink}" stroke-width="2"/>
+      <ellipse cx="74" cy="227" rx="11" ry="6" fill="#fff" stroke="${ink}" stroke-width="2"/></g>
     <path d="M34 152 Q34 139 48 138 H72 Q86 139 86 152 L91 199 Q91 209 81 209 H39 Q29 209 29 199 Z"
       fill="${c}" stroke="${ink}" stroke-width="2.5"/>
     <path d="M29 196 Q60 214 91 196" fill="none" stroke="${ink}" stroke-width="1.5" opacity=".35"/>
@@ -530,6 +583,7 @@ function go(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
   window.scrollTo(0,0);
   if (id === 's-final') { confetti(); tada(); }
+  if (id === 's-play') requestAnimationFrame(startGame);
   clearInterval(wallTimer);
   if (id === 's-wall') { loadWall(); wallTimer = setInterval(loadWall, 30000); }
 }
@@ -548,7 +602,7 @@ env.onclick = () => {
   env.classList.add('open'); startMusic(); tada(); confetti();
   document.getElementById('coverHint').textContent = 'Yeay! 🎉';
   launchBalloons();
-  setTimeout(() => go('s-intro'), 3300);
+  setTimeout(() => go('s-play'), 3300);
 };
 
 function launchBalloons(){
@@ -573,28 +627,127 @@ function launchBalloons(){
   setTimeout(() => { layer.innerHTML = ''; }, 5600);
 }
 
-/* ===================== KENALAN ===================== */
-const stage = document.getElementById('stage');
-KIDS.forEach((k, i) => {
+/* ===================== PERMAINAN: TANGKAP & MASUKKAN KE KELAS ===================== */
+document.getElementById('coverFrom').textContent = 'Dari ' + DARI + ' 🍭';
+document.getElementById('signFrom').textContent = '— ' + DARI + ' 💛';
+document.getElementById('raporBadge').textContent = '📒 RAPOR MURID · ' + NAMA_KELAS.toUpperCase();
+
+const game = document.getElementById('game'), yard = document.getElementById('yard');
+const seatsBox = document.getElementById('seats'), school = document.getElementById('school');
+const KID_STATE = KIDS.map((k, i) => {
+  const el = document.createElement('div'); el.className = 'runner';
   const t = document.createElement('div'); t.className = 'tod';
-  t.style.setProperty('--d', (i * 0.4) + 's');
-  t.innerHTML = toddlerSVG(k);
-  t.appendChild(faceEl(k));
-  t.insertAdjacentHTML('beforeend', HAT);
-  const tag = document.createElement('div'); tag.className = 'tag'; tag.textContent = k.panggilan;
-  t.appendChild(tag);
-  t.onclick = () => {
-    t.classList.remove('jump'); void t.offsetWidth; t.classList.add('jump');
-    squeak();
-  };
-  t.addEventListener('animationend', e => { if (e.animationName === 'jump') t.classList.remove('jump'); });
-  stage.appendChild(t);
+  t.innerHTML = toddlerSVG(k); t.appendChild(faceEl(k)); t.insertAdjacentHTML('beforeend', HAT);
+  const tag = document.createElement('div'); tag.className = 'tag'; tag.textContent = k.panggilan; t.appendChild(tag);
+  el.appendChild(t); game.appendChild(el);
+  el.addEventListener('pointerdown', e => { e.preventDefault(); catchKid(i); });
+  // kursi di kelas
+  const seat = document.createElement('div'); seat.className = 'seat';
+  seat.innerHTML = '<div class="slot">?</div>';
+  const nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = k.panggilan;
+  const desk = document.createElement('div'); desk.className = 'desk';
+  seat.append(nm, desk);
+  seat.onclick = () => { if (seat.classList.contains('filled')) { showKid(i); go('s-kids'); } };
+  seatsBox.insertBefore(seat, seatsBox.querySelector('.door'));
+  return { el, seat, x: 0, y: 0, vx: 0, vy: 0, next: 0, caught: false };
 });
+let gameStarted = false, gameRaf = null, gameLast = 0, caughtCount = 0, speedMul = 1;
+
+function yardBounds(){
+  const g = game.getBoundingClientRect(), y = yard.getBoundingClientRect();
+  const w = KID_STATE[0].el.offsetWidth, h = KID_STATE[0].el.offsetHeight;
+  return { x0: y.left - g.left + 4, y0: y.top - g.top + 4, x1: y.right - g.left - w - 4, y1: y.bottom - g.top - h - 4, w, h,
+           size: Math.min(y.width, y.height) };
+}
+function setPos(s){ s.el.style.transform = `translate3d(${s.x}px,${s.y}px,0)`; }
+function resetGame(){
+  const b = yardBounds();
+  caughtCount = 0; speedMul = 1; gameStarted = true;
+  KID_STATE.forEach((s, i) => {
+    s.caught = false; s.next = 0;
+    s.el.className = 'runner'; s.el.style.display = ''; s.el.style.transition = '';
+    s.x = b.x0 + (b.x1 - b.x0) * (0.15 + i * 0.35); s.y = b.y0 + Math.random() * (b.y1 - b.y0);
+    setPos(s);
+    s.seat.className = 'seat'; s.seat.querySelector('.face, .slot').outerHTML = '<div class="slot">?</div>';
+  });
+  document.getElementById('playTitle').textContent = 'Waduh, adik-adiknya kabur! 🏃💨';
+  document.getElementById('playSub').firstChild.textContent = 'Ketuk untuk menangkap, lalu mereka masuk ke kelas · ';
+  document.getElementById('playCount').textContent = '0/3 tertangkap';
+  document.getElementById('toRapor').style.display = 'none';
+  document.getElementById('yardEmpty').style.display = 'none';
+}
+function startGame(){
+  if (!gameStarted) resetGame();
+  cancelAnimationFrame(gameRaf); gameLast = performance.now(); gameRaf = requestAnimationFrame(gameLoop);
+}
+function gameLoop(now){
+  if (!document.getElementById('s-play').classList.contains('active')) return;
+  const dt = Math.min(.05, (now - gameLast) / 1000); gameLast = now;
+  const b = yardBounds();
+  const base = Math.max(90, b.size * 0.42) * speedMul;
+  KID_STATE.forEach(s => {
+    if (s.caught) return;
+    if (now > s.next) {
+      const a = Math.random() * Math.PI * 2, sp = base * (0.75 + Math.random() * 0.5);
+      s.vx = Math.cos(a) * sp; s.vy = Math.sin(a) * sp * 0.8;
+      s.next = now + 700 + Math.random() * 1500;
+    }
+    s.x += s.vx * dt; s.y += s.vy * dt;
+    if (s.x < b.x0) { s.x = b.x0; s.vx = Math.abs(s.vx); } else if (s.x > b.x1) { s.x = b.x1; s.vx = -Math.abs(s.vx); }
+    if (s.y < b.y0) { s.y = b.y0; s.vy = Math.abs(s.vy); } else if (s.y > b.y1) { s.y = b.y1; s.vy = -Math.abs(s.vy); }
+    s.el.style.setProperty('--tilt', (s.vx > 0 ? 7 : -7) + 'deg');
+    setPos(s);
+  });
+  gameRaf = requestAnimationFrame(gameLoop);
+}
+function catchKid(i){
+  const s = KID_STATE[i];
+  if (s.caught) return;
+  s.caught = true; squeak();
+  s.el.classList.add('caught');
+  // tulisan "Hap!"
+  const hap = document.createElement('div'); hap.className = 'hap';
+  hap.textContent = ['Hap! 🙌', 'Kena! 😆', 'Dapat! ✋'][caughtCount % 3];
+  hap.style.left = (s.x + s.el.offsetWidth / 2) + 'px'; hap.style.top = (s.y + s.el.offsetHeight * 0.2) + 'px';
+  game.appendChild(hap); setTimeout(() => hap.remove(), 950);
+  // terbang ke kursinya di kelas
+  setTimeout(() => {
+    const g = game.getBoundingClientRect(), slot = s.seat.querySelector('.slot').getBoundingClientRect();
+    const w = s.el.offsetWidth;
+    const sc = slot.width / (w * 0.62);
+    const cx = slot.left - g.left + slot.width / 2, cy = slot.top - g.top + slot.height / 2;
+    s.el.classList.add('to-class');
+    s.el.style.transform = `translate3d(${cx - sc * w / 2}px,${cy - sc * w * 0.87}px,0) scale(${sc})`;
+    setTimeout(() => {
+      s.el.style.display = 'none';
+      s.seat.querySelector('.slot').replaceWith(faceEl(KIDS[i]));
+      s.seat.classList.add('filled');
+      tone(784, 0, .1, .1); tone(1046.5, .08, .2, .1);
+      caughtCount++; speedMul *= 1.25;
+      document.getElementById('playCount').textContent = `${caughtCount}/3 tertangkap`;
+      if (caughtCount === KIDS.length) allCaught();
+    }, 920);
+  }, 380);
+}
+function bell(){ [0, .45, .9].forEach(t => { tone(1318.5, t, .25, .11); tone(1046.5, t + .2, .3, .1); }); }
+function allCaught(){
+  bell(); confetti();
+  school.classList.remove('ring'); void school.offsetWidth; school.classList.add('ring');
+  document.getElementById('playTitle').textContent = 'Kriiing! Semua sudah masuk kelas 🔔';
+  document.getElementById('playSub').firstChild.textContent = 'Ketuk muridnya untuk lihat rapor masing-masing · ';
+  document.getElementById('playCount').textContent = '3/3 di kelas ✓';
+  document.getElementById('yardEmpty').style.display = 'flex';
+  document.getElementById('toRapor').style.display = '';
+}
+document.getElementById('toRapor').onclick = () => { showKid(0); go('s-kids'); };
 
 /* ===================== ALAT ATUR WAJAH (?atur) ===================== */
 if (/[?&]atur\b/.test(location.search)) {
   const panel = document.createElement('div'); panel.className = 'atur';
-  panel.innerHTML = '<h3>🛠️ Atur posisi wajah</h3><div class="small">Geser slider sampai wajah pas di lingkaran. Hasilnya langsung terlihat di atas. Mode ini hanya muncul kalau link diakhiri ?atur.</div>';
+  panel.innerHTML = '<h3>🛠️ Atur posisi wajah</h3><div class="small">Geser slider sampai wajah pas di lingkaran. Mode ini hanya muncul kalau link diakhiri ?atur.</div>';
+  const prev = document.createElement('div'); prev.style.cssText = 'display:flex;gap:14px;justify-content:center;margin:10px 0';
+  KIDS.forEach(k => { const f = faceEl(k); f.style.width = '96px'; prev.appendChild(f); });
+  panel.appendChild(prev);
   const out = document.createElement('textarea'); out.rows = 4; out.readOnly = true;
   const render = () => {
     out.value = KIDS.map(k => `${k.panggilan}: wajah: { x: '${k.wajah.x}', y: '${k.wajah.y}', zoom: ${k.wajah.zoom} },`).join('\n');
@@ -616,9 +769,9 @@ if (/[?&]atur\b/.test(location.search)) {
   copy.style.marginTop = '8px';
   copy.onclick = () => { out.select(); try { navigator.clipboard.writeText(out.value); } catch (e) { document.execCommand('copy'); } toast('Tersalin! Kirim ke Claude atau tempel di file 👍'); };
   panel.append(out, copy);
-  document.getElementById('s-intro').insertBefore(panel, document.querySelector('#s-intro .nav'));
+  const s = document.getElementById('s-play'); s.insertBefore(panel, s.firstChild);
   render();
-  go('s-intro');
+  go('s-play');
 }
 
 /* ===================== BIODATA ===================== */
@@ -640,7 +793,7 @@ function showKid(i){
     : `<span class="sensor" id="sensor"><span class="blurred">Rahasia, hanya Juan dan Tuhan yang tahu</span><span class="tag"><span>DISENSOR</span></span></span>`;
   card.innerHTML = `
     <div class="stamp">${k.stempel}</div>
-    <div class="card-label">BIODATA MURID NO. ${String(i+1).padStart(2,'0')}</div>
+    <div class="card-label">RAPOR MURID NO. ${String(i+1).padStart(2,'0')}</div>
     <div class="card-top">
       <div class="polaroid"><div class="tape"></div><div class="ph"></div><div class="cap">${k.panggilan} kecil 💕</div></div>
       <div class="bio">
@@ -747,6 +900,7 @@ document.getElementById('restart').onclick = () => {
   document.getElementById('micBtn').style.display = '';
   document.getElementById('cakeHint').textContent = 'Satu lilin untuk satu anak. Ketuk lilinnya, atau tiup beneran pakai mikrofon!';
   document.getElementById('flyLayer').innerHTML = '';
+  gameStarted = false;
   showKid(0); go('s-cover');
 };
 
