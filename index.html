@@ -47,13 +47,13 @@
   .cover-title{text-align:center;font-size:clamp(1.6rem,6vw,2.6rem);line-height:1.1}
   .cover-title span{color:var(--pink)}
   .cover-sub{font-size:1.25rem;text-align:center;max-width:460px}
-  .envelope{position:relative;width:min(340px,86vw);aspect-ratio:3/2;cursor:pointer;margin-top:30px}
+  .envelope{position:relative;width:min(340px,86vw);aspect-ratio:3/2;cursor:pointer;margin-top:150px}
   .env-back{position:absolute;inset:0;background:#ffb3c4;border:3px solid var(--ink);border-radius:10px}
   .letter{position:absolute;left:8%;right:8%;top:10%;bottom:6%;background:#fff;border:3px solid var(--ink);
     border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;
-    font-family:'Baloo 2';font-size:1.3rem;transition:transform .7s ease .35s;padding:8px}
+    font-family:'Baloo 2';font-size:1.3rem;transition:transform .7s ease .35s;padding:8px;z-index:1}
   .env-front{position:absolute;inset:0;background:#ff8fab;border:3px solid var(--ink);border-radius:10px;
-    clip-path:polygon(0 25%,50% 62%,100% 25%,100% 100%,0 100%)}
+    clip-path:polygon(0 25%,50% 62%,100% 25%,100% 100%,0 100%);z-index:2}
   .env-flap{position:absolute;left:0;right:0;top:0;height:62%;background:#ff6f91;border:3px solid var(--ink);
     clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .5s ease;z-index:3}
   .seal{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);font-size:2.2rem;z-index:4;transition:opacity .3s}
@@ -247,6 +247,9 @@ const KIDS = [
 
 const PESAN_PENUTUP = 'Selamat ulang tahun, Kuswan, Samuel, dan Juan! Terima kasih sudah jadi teman kerja yang seru, sabar, dan selalu bisa diandalkan. Semoga tahun ini membawa kesehatan, rezeki yang lancar, dan kebahagiaan untuk kalian dan orang-orang tersayang. Tetap jadi anak baik di kantor ya, jangan lupa berbagi gorengan! 🎂💛';
 
+/* status audio (harus dideklarasikan paling awal) */
+let actx = null, muted = false;
+
 /* ===================== FOTO ===================== */
 function placeholder(name, color){
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='${color}'/><circle cx='50' cy='45' r='26' fill='#ffe0c2' stroke='#3a2c25' stroke-width='3'/><circle cx='41' cy='42' r='3'/><circle cx='59' cy='42' r='3'/><path d='M40 53 q10 9 20 0' stroke='#3a2c25' stroke-width='3' fill='none'/><text x='50' y='92' text-anchor='middle' font-size='14' font-family='sans-serif' fill='#fff' font-weight='bold'>${name}</text></svg>`;
@@ -417,7 +420,6 @@ document.getElementById('restart').onclick = () => {
 };
 
 /* ===================== SUARA (kotak musik) ===================== */
-let actx = null, muted = false, songTimer = [];
 function initAudio(){ if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); }
 function tone(freq, start, dur, vol = .18){
   if (!actx || muted) return;
