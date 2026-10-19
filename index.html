@@ -18,7 +18,7 @@
   body{
     font-family:'Patrick Hand',cursive; color:var(--ink); background:var(--paper);
     background-image:radial-gradient(#f3d9b8 1.2px, transparent 1.2px);
-    background-size:22px 22px; overflow-x:hidden;
+    background-size:22px 22px;
   }
   h1,h2,h3,.baloo{font-family:'Baloo 2',cursive;margin:0}
   button{font-family:'Baloo 2',cursive;cursor:pointer}
@@ -173,6 +173,14 @@
     border-radius:999px;padding:0 10px;font-family:'Baloo 2';font-size:clamp(.8rem,3.4vw,1rem);white-space:nowrap;z-index:2}
   .wave{transform-box:view-box;transform-origin:90px 152px;animation:wave 1.6s ease-in-out infinite}
   @keyframes wave{50%{transform:rotate(9deg)}}
+  /* alat atur wajah (buka kartu dengan ?atur di akhir link) */
+  .atur{width:min(740px,100%);background:#fff;border:3px dashed var(--ink);border-radius:16px;padding:14px 16px;font-size:1.05rem}
+  .atur h3{font-family:'Baloo 2';margin:0 0 6px}
+  .atur .kid{display:grid;grid-template-columns:70px 1fr;gap:4px 10px;align-items:center;padding:8px 0;border-top:1.5px solid #eee}
+  .atur .kid b{font-family:'Baloo 2';grid-row:span 3}
+  .atur label{display:flex;align-items:center;gap:8px;font-size:.95rem}
+  .atur input[type=range]{flex:1}
+  .atur textarea{width:100%;font-family:monospace;font-size:.85rem;margin-top:8px;border:2px solid var(--ink);border-radius:8px;padding:8px}
   .bubble{position:relative;background:#fff;border:3px solid var(--ink);border-radius:18px;padding:12px 18px;
     font-size:1.25rem;line-height:1.35;width:min(520px,100%);text-align:center;box-shadow:4px 4px 0 var(--ink);margin-top:14px}
   .bubble::before{content:'';position:absolute;top:-16px;left:var(--ax,50%);transform:translateX(-50%);
@@ -298,7 +306,6 @@
   <h2 class="center intro-title">Kenalan dulu sama<br>murid baru kita! 👶</h2>
   <p class="center intro-sub">Ketuk adik-adiknya satu per satu ya</p>
   <div class="stage" id="stage"></div>
-  <div class="bubble" id="bubble">👆 Ayo ketuk salah satu adik di atas!</div>
   <div class="nav">
     <button class="btn" data-go="s-kids">Buka Buku Induk 📒</button>
   </div>
@@ -385,14 +392,16 @@
      - Kalau tidak ada, dipakai foto biasa dan dipotong otomatis lewat "wajah":
        x = posisi tengah wajah dari kiri foto (persen)
        y = posisi tengah wajah dari atas foto (persen)
-       zoom = seberapa dekat (1 = seluruh lebar foto, 2.2 = kira-kira wajah saja)
+       zoom = seberapa dekat (1 = seluruh lebar foto, makin besar makin dekat)
+     - Cara paling gampang: buka kartu dengan "?atur" di akhir link
+       (contoh: .../ultah-oktober/?atur), geser slidernya sampai pas,
+       lalu salin hasilnya ke sini.
    ======================================================= */
 const KIDS = [
   {
     nama: 'Kuswanhari', panggilan: 'Kuswan', umurBulan: 384, warna: '#ff8a3d',
     file: 'foto/kuswanhari.jpg', drive: '1f2lj9QVWB4MyEEn8BEViGxuiCGCxKR3t',
-    fileWajah: 'foto/kuswanhari-wajah.png', wajah: { x: '50%', y: '32%', zoom: 2.2 },
-    sapa: 'Halo! Aku Kuswan, umurku 384 bulan. Mainan favoritku… mecahin telor tiap tanggal 26! 🥚',
+    fileWajah: 'foto/kuswanhari-wajah.png', wajah: { x: '50%', y: '50%', zoom: 1.3 },
     prop: 'egg',
     mainan: 'Mecahin telor tiap tanggal 26',
     catatan: 'Bapak/Ibu Guru ikut senang lihat Kuswan selalu rukun dengan istri. Tetap romantis sampai tua ya! Semoga selalu disambut antusias kalau pulang rumah, gak cuma kalau lagi akhir bulan aja. Hihihi.',
@@ -401,8 +410,7 @@ const KIDS = [
   {
     nama: 'Samuel', panggilan: 'Samuel', umurBulan: 336, warna: '#3d8bff',
     file: 'foto/samuel.jpg', drive: '1v2Kj0zyeQBVLgiOaeEG0_BQWkmiB9Weq',
-    fileWajah: 'foto/samuel-wajah.png', wajah: { x: '50%', y: '32%', zoom: 2.2 },
-    sapa: 'Aku Samuel! Makan 5 kali sehari biar kuat angkat dumbel. Americano-nya mana? 💪☕',
+    fileWajah: 'foto/samuel-wajah.png', wajah: { x: '50%', y: '50%', zoom: 1.3 },
     prop: 'dumbbell',
     mainan: 'Bench press sambil nyeruput americano',
     catatan: 'Bapak/Ibu Guru bangga sekali melihat nafsu makan Samuel sekarang. Sehari bisa makan 4 sampai 5 kali ya, Nak?',
@@ -411,8 +419,7 @@ const KIDS = [
   {
     nama: 'Juan', panggilan: 'Juan', umurBulan: 312, warna: '#2fb36d',
     file: 'foto/juan.jpg', drive: '1LwmahjRqhwUL3e5eusjgfXZfn8M-aRDx',
-    fileWajah: 'foto/juan-wajah.png', wajah: { x: '50%', y: '32%', zoom: 2.2 },
-    sapa: 'Aku Juan! Udah punya PS5, iPhone, motor lunas… tinggal nyari teman main seumur hidup 🙈',
+    fileWajah: 'foto/juan-wajah.png', wajah: { x: '50%', y: '50%', zoom: 1.3 },
     prop: 'controller',
     mainan: null, // disensor
     catatan: 'Bapak/Ibu Guru bangga sekali dengan prestasi Juan. Cicilan motor sudah lunas, HP iPhone, punya PS5, jam tangan digital keren, good listener, plus melek politik dan finansial. Wah, paket komplit! Tapi dari sini kita belajar kalau Tuhan itu Maha Adil ya... cowok sesempurna ini ternyata masih disuruh sabar nunggu jodoh.',
@@ -451,6 +458,7 @@ function makeImg(k, srcs = photoSources(k)){
   return img;
 }
 // Wajah bulat: pakai fileWajah kalau ada (tanpa zoom), kalau tidak pakai foto biasa + atur posisi/zoom
+const FACE_FITS = [];
 function faceEl(k){
   const w = document.createElement('div'); w.className = 'face';
   const srcs = k.fileWajah ? [k.fileWajah, ...photoSources(k)] : photoSources(k);
@@ -471,7 +479,7 @@ function faceEl(k){
     Object.assign(s, { position: 'absolute', width: W * 100 + '%', height: H * 100 + '%',
       left: left * 100 + '%', top: top * 100 + '%', objectFit: 'fill', maxWidth: 'none' });
   };
-  img.addEventListener('load', fit); fit();
+  img.addEventListener('load', fit); fit(); FACE_FITS.push(fit);
   w.appendChild(img);
   return w;
 }
@@ -566,7 +574,7 @@ function launchBalloons(){
 }
 
 /* ===================== KENALAN ===================== */
-const stage = document.getElementById('stage'), bubble = document.getElementById('bubble');
+const stage = document.getElementById('stage');
 KIDS.forEach((k, i) => {
   const t = document.createElement('div'); t.className = 'tod';
   t.style.setProperty('--d', (i * 0.4) + 's');
@@ -578,15 +586,40 @@ KIDS.forEach((k, i) => {
   t.onclick = () => {
     t.classList.remove('jump'); void t.offsetWidth; t.classList.add('jump');
     squeak();
-    const sr = stage.getBoundingClientRect(), tr = t.getBoundingClientRect();
-    bubble.style.setProperty('--ax', (tr.left + tr.width / 2 - bubble.getBoundingClientRect().left) + 'px');
-    bubble.innerHTML = '';
-    const b = document.createElement('b'); b.style.color = k.warna; b.textContent = k.panggilan + ': ';
-    bubble.append(b, document.createTextNode('"' + k.sapa + '"'));
   };
   t.addEventListener('animationend', e => { if (e.animationName === 'jump') t.classList.remove('jump'); });
   stage.appendChild(t);
 });
+
+/* ===================== ALAT ATUR WAJAH (?atur) ===================== */
+if (/[?&]atur\b/.test(location.search)) {
+  const panel = document.createElement('div'); panel.className = 'atur';
+  panel.innerHTML = '<h3>🛠️ Atur posisi wajah</h3><div class="small">Geser slider sampai wajah pas di lingkaran. Hasilnya langsung terlihat di atas. Mode ini hanya muncul kalau link diakhiri ?atur.</div>';
+  const out = document.createElement('textarea'); out.rows = 4; out.readOnly = true;
+  const render = () => {
+    out.value = KIDS.map(k => `${k.panggilan}: wajah: { x: '${k.wajah.x}', y: '${k.wajah.y}', zoom: ${k.wajah.zoom} },`).join('\n');
+    FACE_FITS.forEach(f => f());
+  };
+  KIDS.forEach(k => {
+    const row = document.createElement('div'); row.className = 'kid';
+    const name = document.createElement('b'); name.textContent = k.panggilan; name.style.color = k.warna; row.appendChild(name);
+    [['x', 'Kiri ↔ kanan', 0, 100, 1], ['y', 'Atas ↕ bawah', 0, 100, 1], ['zoom', 'Zoom', 1, 4, .05]].forEach(([key, lbl, min, max, step]) => {
+      const l = document.createElement('label'); l.textContent = lbl;
+      const r = document.createElement('input'); r.type = 'range'; r.min = min; r.max = max; r.step = step;
+      r.value = parseFloat(k.wajah[key]);
+      r.oninput = () => { k.wajah[key] = key === 'zoom' ? +(+r.value).toFixed(2) : r.value + '%'; render(); };
+      l.appendChild(r); row.appendChild(l);
+    });
+    panel.appendChild(row);
+  });
+  const copy = document.createElement('button'); copy.className = 'btn alt'; copy.textContent = '📋 Salin hasil';
+  copy.style.marginTop = '8px';
+  copy.onclick = () => { out.select(); try { navigator.clipboard.writeText(out.value); } catch (e) { document.execCommand('copy'); } toast('Tersalin! Kirim ke Claude atau tempel di file 👍'); };
+  panel.append(out, copy);
+  document.getElementById('s-intro').insertBefore(panel, document.querySelector('#s-intro .nav'));
+  render();
+  go('s-intro');
+}
 
 /* ===================== BIODATA ===================== */
 let cur = 0;
@@ -714,7 +747,6 @@ document.getElementById('restart').onclick = () => {
   document.getElementById('micBtn').style.display = '';
   document.getElementById('cakeHint').textContent = 'Satu lilin untuk satu anak. Ketuk lilinnya, atau tiup beneran pakai mikrofon!';
   document.getElementById('flyLayer').innerHTML = '';
-  bubble.textContent = '👆 Ayo ketuk salah satu adik di atas!';
   showKid(0); go('s-cover');
 };
 
