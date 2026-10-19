@@ -129,7 +129,41 @@
   #confetti{position:fixed;inset:0;pointer-events:none;z-index:30}
   .mute{position:fixed;top:12px;right:12px;z-index:25;border:3px solid var(--ink);background:#fff;
     border-radius:50%;width:44px;height:44px;font-size:1.2rem}
-  @media (max-width:480px){.stamp{width:74px;height:74px;font-size:.68rem;right:-6px}.polaroid{width:150px}}
+  /* ---------- DINDING UCAPAN ---------- */
+  .wall-sub{font-size:1.15rem;margin:0;max-width:520px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  .chip{border:2.5px solid var(--ink);border-radius:999px;padding:4px 14px;font-size:1rem;background:#fff;color:var(--ink)}
+  .chip.active{background:var(--ink);color:#fff}
+  .wall{width:min(980px,100%);display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px 18px;padding:8px 4px}
+  .sticky{position:relative;padding:22px 16px 14px;border:2.5px solid var(--ink);border-radius:6px 6px 6px 22px;
+    box-shadow:3px 4px 0 rgba(58,44,37,.85);font-size:1.15rem;line-height:1.35;animation:pop .35s ease both;
+    word-wrap:break-word;overflow-wrap:anywhere}
+  .sticky:nth-child(6n+1){background:#fff3a8;transform:rotate(-1.5deg)}
+  .sticky:nth-child(6n+2){background:#ffd6e0;transform:rotate(1.2deg)}
+  .sticky:nth-child(6n+3){background:#d4ecff;transform:rotate(-.6deg)}
+  .sticky:nth-child(6n+4){background:#d8f5df;transform:rotate(1.6deg)}
+  .sticky:nth-child(6n+5){background:#ffe2c6;transform:rotate(-1.1deg)}
+  .sticky:nth-child(6n+6){background:#e9ddff;transform:rotate(.8deg)}
+  .sticky .pin{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:1.4rem}
+  .sticky .to{display:inline-block;font-family:'Baloo 2';font-size:.8rem;letter-spacing:1px;background:#fff;
+    border:2px solid var(--ink);border-radius:999px;padding:0 10px;margin-bottom:6px}
+  .sticky .msg{white-space:pre-line}
+  .sticky .from{text-align:right;margin-top:10px;font-family:'Baloo 2';font-size:1rem}
+  .wall-empty{grid-column:1/-1;text-align:center;font-size:1.2rem;opacity:.75;padding:20px}
+
+  @media (max-width:480px){
+    .screen{padding:64px 14px 40px;gap:16px}
+    .stamp{width:70px;height:70px;font-size:.62rem;right:-6px;top:-18px}
+    .polaroid{width:140px}
+    .card{padding:22px 16px 18px}
+    .tab{padding:7px 12px;font-size:1rem}
+    .row,.note{font-size:1.08rem}
+    .note{line-height:28px;background-image:repeating-linear-gradient(transparent 0 27px,var(--line) 27px 28px)}
+    .envelope{margin-top:120px}
+    .d-sun{width:56px}.d-cloud{width:96px;top:60px}
+    .btn{padding:9px 18px;font-size:1.05rem}
+    .wall{grid-template-columns:1fr;gap:18px}
+  }
 </style>
 </head>
 <body>
@@ -147,7 +181,7 @@
 <!-- 1. COVER -->
 <section class="screen active" id="s-cover">
   <h1 class="cover-title">Surat untuk <span>Adik-Adik</span><br>yang Ulang Tahun Bulan Oktober</h1>
-  <p class="cover-sub">Dari Bapak/Ibu Guru TK Ceria (alias tim kalian) 🍭</p>
+  <p class="cover-sub">Dari Bapak/Ibu Guru Tim HCM 🍭</p>
   <div class="envelope" id="envelope" role="button" aria-label="Buka surat">
     <div class="env-back"></div>
     <div class="letter">Selamat Ulang Tahun!<br>🎂🎈🎉</div>
@@ -160,7 +194,7 @@
 
 <!-- 2. BIODATA MURID -->
 <section class="screen" id="s-kids">
-  <div class="head-badge">📒 BUKU INDUK MURID · TK CERIA</div>
+  <div class="head-badge">📒 BUKU INDUK MURID · TIM HCM</div>
   <div class="tabs" id="tabs"></div>
   <div class="card" id="card"></div>
   <div class="nav">
@@ -192,7 +226,18 @@
   </div>
 </section>
 
-<!-- 4. PENUTUP -->
+<!-- 4. DINDING UCAPAN -->
+<section class="screen" id="s-wall">
+  <h2 class="center" style="font-size:clamp(1.5rem,6vw,2.2rem)">Papan Ucapan dari Teman-Teman 📌</h2>
+  <p class="center wall-sub" id="wallInfo">Memuat ucapan…</p>
+  <div class="wall" id="wall"></div>
+  <div class="nav">
+    <button class="btn alt" data-go="s-cake">⬅ Kembali</button>
+    <button class="btn" data-go="s-final">Lanjut ➡</button>
+  </div>
+</section>
+
+<!-- 5. PENUTUP -->
 <section class="screen" id="s-final">
   <svg class="medal" viewBox="0 0 120 150">
     <path d="M38 0 h18 l10 40 h-18z" fill="#3d8bff" stroke="#3a2c25" stroke-width="3"/>
@@ -207,14 +252,15 @@
   <div class="trio" id="trio"></div>
   <div class="final-card">
     <p style="margin:0" id="finalMsg"></p>
-    <div class="sign">— Bapak/Ibu Guru TK Ceria<br><span class="small">(alias tim kalian tercinta)</span></div>
+    <div class="sign">— Bapak/Ibu Guru Tim HCM 💛</div>
   </div>
   <div class="nav">
-    <button class="btn alt" data-go="s-cake">⬅ Kembali</button>
+    <button class="btn alt" data-go="s-wall">⬅ Kembali</button>
     <button class="btn" id="restart">🔁 Ulang dari Awal</button>
   </div>
 </section>
 
+<script src="config.js"></script>
 <script>
 /* =======================================================
    ISI KARTU: ubah teks di sini saja
@@ -247,6 +293,9 @@ const KIDS = [
 
 const PESAN_PENUTUP = 'Selamat ulang tahun, Kuswan, Samuel, dan Juan! Terima kasih sudah jadi teman kerja yang seru, sabar, dan selalu bisa diandalkan. Semoga tahun ini membawa kesehatan, rezeki yang lancar, dan kebahagiaan untuk kalian dan orang-orang tersayang. Tetap jadi anak baik di kantor ya, jangan lupa berbagi gorengan! 🎂💛';
 
+/* PAPAN UCAPAN: link Apps Script diisi di file config.js (SCRIPT_URL).
+   Selama masih kosong, papan menampilkan contoh ucapan. */
+
 /* status audio (harus dideklarasikan paling awal) */
 let actx = null, muted = false;
 
@@ -275,7 +324,10 @@ function go(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
   window.scrollTo(0,0);
   if (id === 's-final') { confetti(); playSong(); }
+  clearInterval(wallTimer);
+  if (id === 's-wall') { loadWall(); wallTimer = setInterval(loadWall, 30000); }
 }
+let wallTimer = null;
 document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => go(b.dataset.go));
 
 function toast(msg){
@@ -325,7 +377,7 @@ function showKid(i){
   card.style.animation = 'none'; card.offsetHeight; card.style.animation = 'pop .4s ease';
   const s = document.getElementById('sensor');
   if (s) s.onclick = () => toast('Eits! Konten ini khusus 21+ 🙈 (padahal kamu udah 312 bulan, Juan)');
-  document.getElementById('prevKid').style.visibility = i === 0 ? 'hidden' : 'visible';
+  document.getElementById('prevKid').style.display = i === 0 ? 'none' : '';
   document.getElementById('nextKid').textContent = i === KIDS.length - 1 ? 'Tiup Lilin 🎂' : 'Berikutnya ➡';
   pop();
 }
@@ -362,7 +414,7 @@ function blowOut(g){
     document.getElementById('micBtn').style.display = 'none';
   }
 }
-document.getElementById('toFinal').onclick = () => go('s-final');
+document.getElementById('toFinal').onclick = () => go('s-wall');
 
 let micStream = null, micRaf = null;
 document.getElementById('micBtn').onclick = async () => {
@@ -418,6 +470,54 @@ document.getElementById('restart').onclick = () => {
   document.getElementById('cakeHint').textContent = 'Satu lilin untuk satu anak. Ketuk lilinnya, atau tiup beneran pakai mikrofon!';
   showKid(0); go('s-cover');
 };
+
+/* ===================== PAPAN UCAPAN ===================== */
+const DEMO = [
+  { nama: 'Contoh: Rina', ucapan: 'Selamat ulang tahun bapak-bapak balita! Semoga makin sehat, makin sukses, dan makin rajin traktir. 🎉' },
+  { nama: 'Contoh: Dodi', ucapan: 'Kuswan, Samuel, Juan: semoga tahun ini rezekinya lancar, kerjaannya lancar, dan jodohnya (khusus Juan) cepat ketemu! 😆' },
+  { nama: 'Contoh: Sari', ucapan: 'Panjang umur, sehat selalu, dan tetap jadi anak-anak baik di kantor ya. Jangan lupa sisain americano! ☕' }
+];
+let wallData = [];
+
+function renderWall(){
+  const wall = document.getElementById('wall'); wall.innerHTML = '';
+  const list = wallData;
+  if (!list.length) {
+    const e = document.createElement('div'); e.className = 'wall-empty';
+    e.textContent = 'Belum ada ucapan di sini. Ayo jadi yang pertama! ✨'; wall.appendChild(e); return;
+  }
+  list.forEach((m, i) => {
+    const d = document.createElement('div'); d.className = 'sticky'; d.style.animationDelay = Math.min(i, 12) * 0.05 + 's';
+    const pin = document.createElement('span'); pin.className = 'pin'; pin.textContent = '📌';
+    const msg = document.createElement('div'); msg.className = 'msg'; msg.textContent = m.ucapan;
+    const from = document.createElement('div'); from.className = 'from'; from.textContent = '— ' + m.nama;
+    d.append(pin, msg, from); wall.appendChild(d);
+  });
+}
+async function loadWall(){
+  const info = document.getElementById('wallInfo');
+  const url = window.SCRIPT_URL;
+  if (!url) {
+    wallData = DEMO; renderWall();
+    info.textContent = 'Ini masih contoh ucapan. Isi SCRIPT_URL di config.js supaya ucapan asli tampil di sini.';
+    return;
+  }
+  try {
+    const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now());
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error);
+    const data = json.data
+      .map(r => ({ nama: String(r.nama || '').trim() || 'Teman kantor', ucapan: String(r.ucapan || '').trim() }))
+      .filter(m => m.ucapan).reverse();
+    const changed = JSON.stringify(data) !== JSON.stringify(wallData);
+    wallData = data;
+    if (changed) renderWall();
+    info.textContent = `${data.length} ucapan sudah tertempel di papan 💌`;
+  } catch (e) {
+    info.textContent = 'Ucapan belum bisa dimuat. Cek koneksi internet atau SCRIPT_URL di config.js. 🙏';
+    if (!wallData.length) renderWall();
+  }
+}
 
 /* ===================== SUARA (kotak musik) ===================== */
 function initAudio(){ if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); }

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tulis Ucapan Ulang Tahun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#fff8ec;--ink:#3a2c25;--pink:#ff6f91;--yellow:#ffd23f;--blue:#3d8bff;--green:#2fb36d;--orange:#ff8a3d}
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:'Patrick Hand',cursive;color:var(--ink);background:var(--paper);
+    background-image:radial-gradient(#f3d9b8 1.2px,transparent 1.2px);background-size:22px 22px;
+    min-height:100vh;overflow-x:hidden}
+  h1,h2,.baloo{font-family:'Baloo 2',cursive;margin:0}
+  .doodle{position:fixed;pointer-events:none;z-index:0}
+  .d-sun{top:12px;left:12px;width:64px;animation:spin 18s linear infinite}
+  .d-star{bottom:24px;right:18px;width:40px;animation:wiggle 2.6s ease-in-out infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes wiggle{50%{transform:rotate(15deg) scale(1.1)}}
+  @keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+
+  main{position:relative;z-index:1;width:min(560px,100%);margin:0 auto;padding:72px 16px 48px;
+    display:flex;flex-direction:column;gap:20px}
+  .title{text-align:center;font-size:clamp(1.6rem,7vw,2.3rem);line-height:1.1}
+  .title span{color:var(--pink)}
+  .sub{text-align:center;font-size:1.2rem;margin:0}
+  .kids{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+  .kid{font-family:'Baloo 2';color:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:2px 14px;font-size:1rem}
+
+  .card{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:6px 6px 0 var(--ink);
+    padding:22px 18px;animation:pop .4s ease}
+  label{display:block;font-family:'Baloo 2';font-weight:800;font-size:1.05rem;margin:0 0 6px}
+  .field{margin-bottom:18px}
+  input[type=text],textarea{width:100%;font-family:'Patrick Hand',cursive;font-size:1.2rem;color:var(--ink);
+    border:2.5px solid var(--ink);border-radius:12px;padding:10px 12px;background:#fffef6;outline:none}
+  input[type=text]:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(61,139,255,.2)}
+  textarea{min-height:150px;resize:vertical;line-height:1.4;
+    background-image:repeating-linear-gradient(transparent 0 33px,#e3eeff 33px 34px);background-attachment:local}
+  .count{text-align:right;font-size:.95rem;opacity:.65;margin-top:4px}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+  .btn{display:inline-block;border:3px solid var(--ink);border-radius:18px;padding:11px 24px;font-size:1.2rem;
+    font-family:'Baloo 2',cursive;background:var(--yellow);color:var(--ink);box-shadow:4px 4px 0 var(--ink);
+    cursor:pointer;transition:transform .1s;width:100%}
+  .btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+  .btn:disabled{opacity:.6;cursor:wait}
+  .btn.alt{background:#fff}
+
+  .preview-label{text-align:center;font-size:1rem;opacity:.7;margin:-4px 0 -6px}
+  .sticky{position:relative;background:#fff3a8;border:2.5px solid var(--ink);border-radius:6px 6px 6px 22px;
+    box-shadow:3px 4px 0 rgba(58,44,37,.85);padding:22px 16px 14px;font-size:1.15rem;line-height:1.35;
+    transform:rotate(-1.2deg);overflow-wrap:anywhere}
+  .sticky .pin{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:1.4rem}
+  .sticky .msg{white-space:pre-line;min-height:1.4em}
+  .sticky .msg.empty{opacity:.45}
+  .sticky .from{text-align:right;margin-top:10px;font-family:'Baloo 2'}
+
+  .notice{background:#ffe2c6;border:2.5px dashed var(--ink);border-radius:12px;padding:10px 14px;font-size:1.05rem}
+  .done{text-align:center;display:none;flex-direction:column;gap:14px;align-items:center}
+  .done .big{font-size:4rem;line-height:1}
+  .done p{font-size:1.25rem;margin:0}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(140px);background:var(--ink);
+    color:#fff;padding:10px 18px;border-radius:14px;font-size:1.1rem;transition:transform .3s;z-index:20;
+    max-width:90vw;text-align:center}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:30}
+</style>
+</head>
+<body>
+<svg class="doodle d-sun" viewBox="0 0 100 100"><g stroke="#ffb703" stroke-width="5" stroke-linecap="round"><line x1="50" y1="4" x2="50" y2="18"/><line x1="50" y1="82" x2="50" y2="96"/><line x1="4" y1="50" x2="18" y2="50"/><line x1="82" y1="50" x2="96" y2="50"/><line x1="17" y1="17" x2="27" y2="27"/><line x1="73" y1="73" x2="83" y2="83"/><line x1="83" y1="17" x2="73" y2="27"/><line x1="27" y1="73" x2="17" y2="83"/></g><circle cx="50" cy="50" r="24" fill="#ffd23f" stroke="#ffb703" stroke-width="4"/><circle cx="42" cy="46" r="3" fill="#3a2c25"/><circle cx="58" cy="46" r="3" fill="#3a2c25"/><path d="M41 56 q9 8 18 0" stroke="#3a2c25" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+<svg class="doodle d-star" viewBox="0 0 50 50"><path d="M25 3 l6 15 16 1 -12 10 4 16 -14 -9 -14 9 4 -16 -12 -10 16 -1z" fill="#ff6f91" stroke="#3a2c25" stroke-width="2.5" stroke-linejoin="round"/></svg>
+<canvas id="confetti"></canvas>
+<div class="toast" id="toast"></div>
+
+<main>
+  <h1 class="title">Kirim Ucapan untuk<br><span>Adik-Adik</span> yang Ulang Tahun 🎈</h1>
+  <div class="kids">
+    <span class="kid" style="background:var(--orange)">Kuswan</span>
+    <span class="kid" style="background:var(--blue)">Samuel</span>
+    <span class="kid" style="background:var(--green)">Juan</span>
+  </div>
+  <p class="sub">Satu ucapan untuk mereka bertiga, ya! Nanti ditempel di papan ucapan saat perayaan. 🤫 Jangan bilang-bilang ke mereka.</p>
+
+  <div class="notice" id="notice" style="display:none">⚠️ Form belum tersambung ke Google Sheet. Isi <b>SCRIPT_URL</b> di file config.js dulu.</div>
+
+  <form class="card" id="form" autocomplete="off">
+    <div class="field">
+      <label for="nama">Nama kamu</label>
+      <input type="text" id="nama" maxlength="60" placeholder="contoh: Rina" required>
+    </div>
+    <div class="field">
+      <label for="ucapan">Ucapanmu untuk Kuswan, Samuel & Juan</label>
+      <textarea id="ucapan" maxlength="1000" placeholder="Tulis doa, harapan, atau candaan terbaikmu…" required></textarea>
+      <div class="count"><span id="count">0</span>/1000</div>
+    </div>
+    <div class="hp" aria-hidden="true"><label for="website">Jangan diisi</label><input type="text" id="website" tabindex="-1"></div>
+    <button class="btn" type="submit" id="submit">📌 Tempel ucapanku!</button>
+  </form>
+
+  <p class="preview-label">Begini nanti tampilannya di papan:</p>
+  <div class="sticky" id="preview">
+    <span class="pin">📌</span>
+    <div class="msg empty" id="pMsg">Ucapanmu akan muncul di sini…</div>
+    <div class="from" id="pFrom">— Nama kamu</div>
+  </div>
+
+  <section class="done card" id="done">
+    <div class="big">🎉</div>
+    <h2>Yeay, ucapanmu sudah tertempel!</h2>
+    <p>Terima kasih sudah ikut bikin kejutan. Sampai jumpa di perayaannya! 🎂</p>
+    <button class="btn alt" id="again" type="button">✍️ Tulis ucapan lagi</button>
+  </section>
+</main>
+
+<script src="config.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const form = $('form'), nama = $('nama'), ucapan = $('ucapan'), btn = $('submit');
+const url = window.SCRIPT_URL;
+if (!url) { $('notice').style.display = ''; btn.disabled = true; }
+
+try { const saved = localStorage.getItem('ultah_nama'); if (saved) nama.value = saved; } catch (e) {}
+
+function updatePreview(){
+  const t = ucapan.value.trim();
+  $('pMsg').textContent = t || 'Ucapanmu akan muncul di sini…';
+  $('pMsg').classList.toggle('empty', !t);
+  $('pFrom').textContent = '— ' + (nama.value.trim() || 'Nama kamu');
+  $('count').textContent = ucapan.value.length;
+}
+nama.addEventListener('input', updatePreview);
+ucapan.addEventListener('input', updatePreview);
+updatePreview();
+
+function toast(msg){
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!url) return;
+  const data = { nama: nama.value.trim(), ucapan: ucapan.value.trim(), website: $('website').value };
+  if (!data.nama || !data.ucapan) { toast('Nama dan ucapan diisi dulu ya! ✏️'); return; }
+  btn.disabled = true; btn.textContent = '⏳ Lagi ditempel…';
+  try {
+    // dikirim sebagai teks biasa supaya Apps Script bisa menerimanya langsung dari browser
+    const res = await fetch(url, { method: 'POST', body: JSON.stringify(data) });
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || 'Gagal menyimpan');
+    try { localStorage.setItem('ultah_nama', data.nama); } catch (e) {}
+    form.style.display = 'none'; $('preview').style.display = 'none';
+    document.querySelector('.preview-label').style.display = 'none';
+    $('done').style.display = 'flex'; confetti(); window.scrollTo(0, 0);
+  } catch (err) {
+    toast('Waduh, ucapannya belum terkirim. Coba lagi sebentar ya 🙏');
+  } finally {
+    btn.disabled = false; btn.textContent = '📌 Tempel ucapanku!';
+  }
+});
+
+$('again').onclick = () => {
+  ucapan.value = ''; updatePreview();
+  $('done').style.display = 'none'; form.style.display = '';
+  $('preview').style.display = ''; document.querySelector('.preview-label').style.display = '';
+  ucapan.focus();
+};
+
+/* confetti */
+const cv = $('confetti'), cx = cv.getContext('2d'); let parts = [], raf = null;
+function resize(){ cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
+addEventListener('resize', resize); resize();
+function confetti(){
+  const colors = ['#ff6f91','#ffd23f','#3d8bff','#2fb36d','#ff8a3d','#b388ff'];
+  for (let i = 0; i < 140; i++) parts.push({ x: innerWidth/2 + (Math.random()-.5)*160, y: innerHeight*.3,
+    vx: (Math.random()-.5)*13, vy: -Math.random()*13-4, s: 6+Math.random()*8, r: Math.random()*6,
+    vr: (Math.random()-.5)*.3, c: colors[i % colors.length], life: 0 });
+  if (!raf) raf = requestAnimationFrame(step);
+}
+function step(){
+  cx.clearRect(0,0,innerWidth,innerHeight);
+  parts.forEach(p => { p.vy += .32; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.life++;
+    cx.save(); cx.translate(p.x,p.y); cx.rotate(p.r); cx.fillStyle = p.c; cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); cx.restore(); });
+  parts = parts.filter(p => p.y < innerHeight + 40 && p.life < 400);
+  raf = parts.length ? requestAnimationFrame(step) : (cx.clearRect(0,0,innerWidth,innerHeight), null);
+}
+</script>
+</body>
+</html>
